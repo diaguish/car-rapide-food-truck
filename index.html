@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Car Rapide Food Truck — Maquettes 3D</title>
+<style>
+  :root { --bg:#fdf8ec; --ink:#1d2433; --muted:#5b6475; --card:#ffffff; --line:#e7dfc9; --yellow:#f4c21b; --blue:#1f5fbf; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#141821; --ink:#eef1f6; --muted:#a3abba; --card:#1d2330; --line:#2c3445; --yellow:#f4c21b; --blue:#6ea2ff; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .band { height:10px; background:repeating-linear-gradient(90deg, var(--yellow) 0 40px, var(--blue) 40px 80px); }
+  main { max-width:760px; margin:0 auto; padding:40px 16px 56px; }
+  h1 { font-size:clamp(28px, 6vw, 40px); line-height:1.15; margin:0 0 8px; }
+  p.lead { color:var(--muted); margin:0 0 32px; }
+  .cards { display:grid; gap:16px; }
+  a.card { display:block; text-decoration:none; color:inherit; background:var(--card); border:1px solid var(--line); border-left:6px solid var(--yellow); border-radius:12px; padding:20px; transition:transform .15s, box-shadow .15s; }
+  a.card:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.08); }
+  a.card.secondary { border-left-color:var(--blue); }
+  .tag { display:inline-block; font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+  .card h2 { margin:0 0 6px; font-size:20px; }
+  .card p { margin:0; color:var(--muted); }
+  .help { margin-top:32px; padding:16px 20px; border:1px dashed var(--line); border-radius:12px; color:var(--muted); font-size:15px; }
+  .help strong { color:var(--ink); }
+</style>
+</head>
+<body>
+<div class="band"></div>
+<main>
+  <h1>Car Rapide Food Truck</h1>
+  <p class="lead">Maquettes 3D du car rapide transformé en food truck à Dakar. Ouvrez une version, puis faites tourner le véhicule pour voir l'extérieur et la cuisine.</p>
+
+  <div class="cards">
+    <a class="card" href="v4-plan-14-pieds.html">
+      <span class="tag">Version actuelle</span>
+      <h2>v4 — Aménagement selon le plan 14 pieds</h2>
+      <p>Cuisson sous la hotte, évier double, tiroirs réfrigérés, rangements au fond et cloison avec la cabine.</p>
+    </a>
+    <a class="card secondary" href="v3-cuisine-pinterest.html">
+      <span class="tag">Version précédente</span>
+      <h2>v3 — Cuisine inspirée de Pinterest</h2>
+      <p>Première version de l'intérieur, d'après la photo de référence.</p>
+    </a>
+  </div>
+
+  <div class="help">
+    <strong>Comment naviguer :</strong> clic gauche et glisser pour tourner, molette (ou pincer sur téléphone) pour zoomer, clic droit pour déplacer. Les boutons permettent d'enlever le toit, de rendre les murs transparents, d'ouvrir le volet ou d'afficher les étiquettes.
+  </div>
+</main>
+</body>
+</html>
