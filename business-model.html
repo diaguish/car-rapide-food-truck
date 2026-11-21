@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Business Model Car Rapide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: canevas en 9 blocs (grille du Business Model Canvas), puis simulateur de rentabilité et feuille de route. */
+:root {
+  --bg: #f3f5f9;
+  --surface: #ffffff;
+  --ink: #141a29;
+  --muted: #586179;
+  --line: #d9deea;
+  --yellow: #f4c21b;
+  --blue: #1f4fa8;
+  --red: #d2382f;
+  --green: #1e8a4c;
+  --chip: #e8eefb;
+  --display: "Bowlby One", "Arial Black", Impact, sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1420; --surface: #181f2e; --ink: #eef1f7; --muted: #a2abc0; --line: #2b3448;
+    --yellow: #f4c21b; --blue: #7aa5ff; --red: #ff7a70; --green: #5cd18f; --chip: #222c42; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1420; --surface: #181f2e; --ink: #eef1f7; --muted: #a2abc0; --line: #2b3448;
+  --yellow: #f4c21b; --blue: #7aa5ff; --red: #ff7a70; --green: #5cd18f; --chip: #222c42; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); }
+.stripe { height: 12px; background: repeating-linear-gradient(90deg, var(--yellow) 0 36px, var(--blue) 36px 72px, var(--red) 72px 84px, var(--blue) 84px 120px); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-block: 32px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 48px; }
+header { display: grid; gap: 10px; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 5.5vw, 54px); line-height: 1.05; margin: 0; text-wrap: balance; }
+h1 span { color: var(--blue); }
+.lead { max-width: 68ch; color: var(--muted); margin: 0; font-size: 16px; }
+h2 { font-family: var(--display); font-weight: 400; font-size: clamp(22px, 3vw, 30px); margin: 0 0 6px; text-wrap: balance; }
+.section-lead { color: var(--muted); margin: 0 0 20px; max-width: 70ch; }
+
+/* Canevas */
+.canvas { display: grid; gap: 10px; grid-template-columns: repeat(10, minmax(0, 1fr));
+  grid-template-areas:
+    "kp kp ka ka vp vp cr cr cs cs"
+    "kp kp kr kr vp vp ch ch cs cs"
+    "co co co co co rv rv rv rv rv"; }
+.block { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 16px 18px; min-width: 0; display: grid; align-content: start; gap: 8px; }
+.block h3 { margin: 0; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+.block h3 i { font-style: normal; display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 6px; background: var(--chip); color: var(--blue); font-size: 12px; }
+.block .q { margin: 0; font-size: 13px; color: var(--muted); font-style: italic; }
+.block ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+.block li::marker { color: var(--blue); }
+.block b { font-weight: 600; }
+.kp { grid-area: kp; } .ka { grid-area: ka; } .kr { grid-area: kr; } .cr { grid-area: cr; } .ch { grid-area: ch; } .cs { grid-area: cs; } .co { grid-area: co; } .rv { grid-area: rv; }
+.vp { grid-area: vp; background: var(--yellow); border-color: var(--yellow); color: #141a29; }
+.vp h3 i { background: #141a29; color: var(--yellow); }
+.vp .q { color: #3b3420; }
+.vp li::marker { color: #141a29; }
+@media (max-width: 980px) {
+  .canvas { grid-template-columns: 1fr 1fr; grid-template-areas: "vp vp" "cs cr" "ch ch" "kp ka" "kr kr" "co rv"; }
+}
+@media (max-width: 620px) {
+  .canvas { grid-template-columns: 1fr; grid-template-areas: "vp" "cs" "cr" "ch" "rv" "kr" "ka" "kp" "co"; }
+}
+
+/* Simulateur */
+.sim { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 20px; align-items: start; }
+@media (max-width: 860px) { .sim { grid-template-columns: 1fr; } }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; display: grid; gap: 18px; min-width: 0; }
+.field { display: grid; gap: 6px; }
+.field label { display: flex; justify-content: space-between; gap: 12px; font-weight: 500; }
+.field output { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--blue); white-space: nowrap; }
+.field small { color: var(--muted); }
+input[type=range] { width: 100%; accent-color: var(--blue); }
+input[type=range]:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
+.presets { display: flex; flex-wrap: wrap; gap: 8px; }
+.presets button { font: 600 13px var(--body); padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; }
+.presets button[aria-pressed="true"] { background: var(--blue); color: #fff; border-color: var(--blue); }
+.presets button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.kpi { background: var(--bg); border-radius: 10px; padding: 14px; display: grid; gap: 2px; min-width: 0; }
+.kpi span { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
+.kpi strong { font-size: clamp(20px, 2.6vw, 26px); font-variant-numeric: tabular-nums; line-height: 1.2; }
+.kpi em { font-style: normal; font-size: 13px; color: var(--muted); }
+.kpi.good strong { color: var(--green); } .kpi.bad strong { color: var(--red); }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 14px; }
+td, th { padding: 8px 4px; border-bottom: 1px solid var(--line); text-align: left; }
+td:last-child, th:last-child { text-align: right; }
+tr.total td { font-weight: 700; border-bottom: 0; }
+.table-scroll { overflow-x: auto; }
+.bar { height: 10px; border-radius: 999px; background: var(--bg); overflow: hidden; position: relative; }
+.bar div { height: 100%; background: var(--blue); border-radius: 999px; transition: width .25s; }
+.bar .mark { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--red); }
+.legend { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .bar div { transition: none; } }
+
+/* Feuille de route + risques */
+.road { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 860px) { .road { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .road { grid-template-columns: 1fr; } }
+.step { background: var(--surface); border: 1px solid var(--line); border-top: 5px solid var(--blue); border-radius: 10px; padding: 16px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.step:nth-child(2) { border-top-color: var(--yellow); } .step:nth-child(3) { border-top-color: var(--red); } .step:nth-child(4) { border-top-color: var(--green); }
+.step .when { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.step h3 { margin: 0; font-size: 17px; }
+.step ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.risks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 720px) { .risks { grid-template-columns: 1fr; } }
+.risk { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 4px; min-width: 0; }
+.risk h3 { margin: 0; font-size: 16px; }
+.risk p { margin: 0; color: var(--muted); }
+.risk p b { color: var(--ink); font-weight: 600; }
+.note { font-size: 13px; color: var(--muted); max-width: 80ch; margin: 12px 0 0; }
+footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 16px; }
+</style>
+</head>
+<body>
+
+<div class="stripe" aria-hidden="true"></div>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Business model · Food truck · Dakar</div>
+    <h1>Le Car Rapide <span>Food Truck</span></h1>
+    <p class="lead">La street food sénégalaise servie depuis l'icône de Dakar : un car rapide jaune et bleu transformé en cuisine mobile, propre et rapide, qui va là où sont les clients.</p>
+  </header>
+
+  <section aria-labelledby="t-canvas">
+    <h2 id="t-canvas">Le canevas en 9 blocs</h2>
+    <p class="section-lead">À lire en partant du centre : la proposition de valeur, puis les clients à droite, l'organisation à gauche et l'argent en bas.</p>
+    <div class="canvas">
+      <article class="block kp">
+        <h3><i>8</i>Partenaires clés</h3>
+        <p class="q">Avec qui travailler ?</p>
+        <ul>
+          <li><b>Carrossier et peintre de cars rapides</b> pour l'aménagement et la livrée</li>
+          <li>Fournisseurs du marché : boulangers, bouchers, poissonniers, maraîchers (Kermel, Castors)</li>
+          <li>Distributeur de gaz butane</li>
+          <li>Mairies et communes des emplacements</li>
+          <li>Wave et Orange Money</li>
+          <li>Organisateurs d'événements, salles de mariage, entreprises</li>
+          <li>Influenceurs food de Dakar</li>
+        </ul>
+      </article>
+      <article class="block ka">
+        <h3><i>7</i>Activités clés</h3>
+        <p class="q">Que faut-il faire chaque jour ?</p>
+        <ul>
+          <li>Achats au marché tôt le matin</li>
+          <li>Préparation et cuisine, service en moins de 5 min</li>
+          <li>Déplacement et installation sur l'emplacement du jour</li>
+          <li>Publication du planning et des plats sur les réseaux</li>
+          <li>Nettoyage, hygiène, entretien du véhicule</li>
+        </ul>
+      </article>
+      <article class="block kr">
+        <h3><i>6</i>Ressources clés</h3>
+        <p class="q">De quoi a-t-on besoin ?</p>
+        <ul>
+          <li><b>Le car rapide aménagé</b> : c'est à la fois la cuisine et la publicité</li>
+          <li>Une équipe de 3 : cuisinier, aide-cuisinier, caissier-chauffeur</li>
+          <li>Les recettes et un menu court</li>
+          <li>Les autorisations (mairie, hygiène, carte grise)</li>
+          <li>La marque et les comptes Instagram, TikTok, WhatsApp</li>
+        </ul>
+      </article>
+      <article class="block vp">
+        <h3><i>1</i>Proposition de valeur</h3>
+        <p class="q">Pourquoi les clients viennent ?</p>
+        <ul>
+          <li><b>Le goût de Dakar, vite et propre</b> : fataya, pastels, dibi, pizza, bissap maison</li>
+          <li><b>Une expérience à photographier</b> : manger devant un vrai car rapide décoré</li>
+          <li><b>Une hygiène visible</b> : cuisine inox ouverte sur la rue</li>
+          <li><b>Des prix de rue</b> : formule midi autour de 2 000 FCFA</li>
+          <li><b>Pas de liquide nécessaire</b> : paiement Wave et Orange Money</li>
+          <li><b>Il vient à vous</b> : bureaux, plage, université, événements</li>
+        </ul>
+      </article>
+      <article class="block cr">
+        <h3><i>4</i>Relation client</h3>
+        <p class="q">Comment les fidéliser ?</p>
+        <ul>
+          <li>Chaîne WhatsApp : emplacement et menu du jour</li>
+          <li>Carte de fidélité : le 10ᵉ repas offert</li>
+          <li>Même emplacement à la même heure, chaque semaine</li>
+          <li>Plat du jour qui change pour donner envie de revenir</li>
+        </ul>
+      </article>
+      <article class="block ch">
+        <h3><i>3</i>Canaux</h3>
+        <p class="q">Comment les clients nous trouvent ?</p>
+        <ul>
+          <li>Le véhicule lui-même, visible de loin</li>
+          <li>Instagram et TikTok (vidéos de cuisine, coulisses)</li>
+          <li>Commandes WhatsApp à emporter</li>
+          <li>Plateformes de livraison autour de l'emplacement</li>
+          <li>Bouche-à-oreille et événements</li>
+        </ul>
+      </article>
+      <article class="block cs">
+        <h3><i>2</i>Segments de clients</h3>
+        <p class="q">Pour qui ?</p>
+        <ul>
+          <li><b>Salariés à midi</b> : Plateau, Almadies, Mermoz</li>
+          <li><b>Étudiants</b> : autour de l'UCAD et des écoles</li>
+          <li><b>Sorties du soir et du week-end</b> : Corniche, plages, Ngor</li>
+          <li><b>Événements privés</b> : mariages, baptêmes, séminaires</li>
+          <li><b>Touristes et diaspora</b>, attirés par l'icône du car rapide</li>
+        </ul>
+      </article>
+      <article class="block co">
+        <h3><i>9</i>Structure de coûts</h3>
+        <p class="q">Combien ça coûte ?</p>
+        <ul>
+          <li><b>Investissement de départ</b> : 7,8 à 17,5 millions FCFA (devis détaillé, hors eau, gaz et électricité)</li>
+          <li><b>Coûts variables</b> : matières premières et emballages, environ 40 % du chiffre d'affaires</li>
+          <li><b>Coûts fixes mensuels</b> : salaires, gaz, carburant et groupe, autorisation municipale, assurance, entretien, communication</li>
+        </ul>
+      </article>
+      <article class="block rv">
+        <h3><i>5</i>Sources de revenus</h3>
+        <p class="q">Comment on gagne de l'argent ?</p>
+        <ul>
+          <li><b>Vente directe</b> à l'emplacement : plats, snacks, formules midi</li>
+          <li><b>Boissons maison</b> (bissap, bouye, gingembre) : la plus forte marge</li>
+          <li><b>Privatisation pour événements</b> : forfait par invité</li>
+          <li><b>Livraison et commandes</b> de bureaux</li>
+          <li>Plus tard : partenariats de marque, vente de bissap en bouteille</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-sim">
+    <h2 id="t-sim">Est-ce que ça tient ? Le simulateur</h2>
+    <p class="section-lead">Les valeurs de départ sont des hypothèses à ajuster avec l'équipe. Bougez les curseurs : tous les chiffres se recalculent.</p>
+    <div class="sim">
+      <div class="panel">
+        <div class="presets" role="group" aria-label="Scénarios">
+          <button type="button" data-preset="prudent">Prudent</button>
+          <button type="button" data-preset="cible" aria-pressed="true">Cible</button>
+          <button type="button" data-preset="ambitieux">Ambitieux</button>
+        </div>
+        <div class="field">
+          <label for="clients">Clients par jour <output id="o-clients"></output></label>
+          <input id="clients" type="range" min="20" max="400" step="5" value="120">
+        </div>
+        <div class="field">
+          <label for="ticket">Ticket moyen <output id="o-ticket"></output></label>
+          <input id="ticket" type="range" min="500" max="6000" step="100" value="2000">
+          <small>Par exemple une formule plat + bissap.</small>
+        </div>
+        <div class="field">
+          <label for="jours">Jours d'ouverture par mois <output id="o-jours"></output></label>
+          <input id="jours" type="range" min="10" max="30" step="1" value="26">
+        </div>
+        <div class="field">
+          <label for="matiere">Matières et emballages <output id="o-matiere"></output></label>
+          <input id="matiere" type="range" min="20" max="60" step="1" value="40">
+          <small>En pourcentage du chiffre d'affaires.</small>
+        </div>
+        <div class="field">
+          <label for="fixes">Charges fixes par mois <output id="o-fixes"></output></label>
+          <input id="fixes" type="range" min="300000" max="3000000" step="50000" value="1000000">
+          <small>Salaires, gaz, carburant, mairie, assurance, entretien, communication.</small>
+        </div>
+        <div class="field">
+          <label for="invest">Investissement de départ <output id="o-invest"></output></label>
+          <input id="invest" type="range" min="5000000" max="35000000" step="250000" value="12750000">
+          <small>Entre 7,8 M (bas) et 17,5 M (haut) d'après le devis détaillé.</small>
+        </div>
+      </div>
+
+      <div class="panel" aria-live="polite">
+        <div class="kpis">
+          <div class="kpi"><span>Chiffre d'affaires / mois</span><strong id="k-ca"></strong><em id="k-ca-an"></em></div>
+          <div class="kpi" id="kpi-res"><span>Résultat / mois</span><strong id="k-res"></strong><em>avant impôts et rémunération des associés</em></div>
+          <div class="kpi"><span>Seuil de rentabilité</span><strong id="k-seuil"></strong><em id="k-seuil-ca"></em></div>
+          <div class="kpi" id="kpi-roi"><span>Retour sur investissement</span><strong id="k-roi"></strong><em>temps pour rembourser le départ</em></div>
+        </div>
+        <div>
+          <div class="legend"><span>Clients par jour</span><span><span style="color:var(--red)">|</span> seuil de rentabilité</span></div>
+          <div class="bar" role="img" id="bar" aria-label=""><div id="bar-fill"></div><span class="mark" id="bar-mark"></span></div>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Compte de résultat mensuel</th><th>FCFA</th></tr></thead>
+            <tbody>
+              <tr><td>Chiffre d'affaires</td><td id="t-ca"></td></tr>
+              <tr><td>− Matières et emballages</td><td id="t-var"></td></tr>
+              <tr><td>= Marge brute</td><td id="t-marge"></td></tr>
+              <tr><td>− Charges fixes</td><td id="t-fixes"></td></tr>
+              <tr class="total"><td>= Résultat</td><td id="t-res"></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p class="note">Charges fixes de départ (1 000 000 FCFA par mois, estimation) : 3 salaires 400 000, gaz 120 000, carburant et groupe électrogène 150 000, autorisation municipale 100 000, assurance 60 000, entretien 60 000, communication 60 000, divers 50 000. À remplacer par vos vrais chiffres.</p>
+  </section>
+
+  <section aria-labelledby="t-road">
+    <h2 id="t-road">Feuille de route</h2>
+    <p class="section-lead">Commencer petit, mesurer, puis élargir.</p>
+    <div class="road">
+      <article class="step"><div class="when">Mois 0 à 3</div><h3>Préparer</h3>
+        <ul><li>Créer l'entreprise (APIX)</li><li>Acheter et aménager le car rapide</li><li>Fixer un menu court (6 à 8 produits)</li><li>Tester les recettes et les prix avec l'entourage</li></ul></article>
+      <article class="step"><div class="when">Mois 3 à 4</div><h3>Lancer</h3>
+        <ul><li>Obtenir les autorisations</li><li>2 ou 3 emplacements tests</li><li>Lancer les comptes Instagram, TikTok et la chaîne WhatsApp</li><li>Compter les clients chaque jour</li></ul></article>
+      <article class="step"><div class="when">Mois 4 à 9</div><h3>Stabiliser</h3>
+        <ul><li>Garder les meilleurs emplacements</li><li>Lancer la carte de fidélité</li><li>Premières privatisations pour événements</li><li>Atteindre le seuil de rentabilité</li></ul></article>
+      <article class="step"><div class="when">Mois 9 à 18</div><h3>Grandir</h3>
+        <ul><li>Contrats avec des entreprises (repas du midi)</li><li>Bissap en bouteille</li><li>Étudier un 2ᵉ véhicule ou un point fixe</li></ul></article>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-risk">
+    <h2 id="t-risk">Risques et parades</h2>
+    <div class="risks">
+      <article class="risk"><h3>Autorisations refusées ou coûteuses</h3><p><b>Parade :</b> rencontrer les mairies avant d'acheter, viser aussi des terrains privés (stations-service, parkings d'entreprises).</p></article>
+      <article class="risk"><h3>Panne du véhicule ancien</h3><p><b>Parade :</b> révision complète au départ, budget entretien mensuel, mécanicien attitré.</p></article>
+      <article class="risk"><h3>Peu de clients sur un emplacement</h3><p><b>Parade :</b> c'est l'avantage du food truck, on change d'emplacement. Mesurer chaque jour et garder les meilleurs.</p></article>
+      <article class="risk"><h3>Hausse du prix des matières</h3><p><b>Parade :</b> menu court, plat du jour selon le marché, suivre le taux de matières chaque semaine.</p></article>
+      <article class="risk"><h3>Chaleur et hygiène</h3><p><b>Parade :</b> isolation du toit, froid en classe climatique 5, chaîne du froid surveillée au thermomètre.</p></article>
+      <article class="risk"><h3>Concurrence des vendeurs de rue</h3><p><b>Parade :</b> miser sur ce qu'eux n'ont pas : l'image du car rapide, l'hygiène visible et l'expérience.</p></article>
+    </div>
+  </section>
+
+  <footer>Document de travail. Les chiffres du simulateur sont des hypothèses, l'investissement vient du devis détaillé. Maquette 3D : diaguish.github.io/car-rapide-food-truck</footer>
+</div>
+
+<script>
+(function () {
+  var presets = {
+    prudent:   { clients: 60,  ticket: 1800, jours: 24, matiere: 42, fixes: 1000000 },
+    cible:     { clients: 120, ticket: 2000, jours: 26, matiere: 40, fixes: 1000000 },
+    ambitieux: { clients: 220, ticket: 2300, jours: 27, matiere: 38, fixes: 1300000 }
+  };
+  var ids = ["clients", "ticket", "jours", "matiere", "fixes", "invest"];
+  var el = {};
+  ids.forEach(function (id) { el[id] = document.getElementById(id); });
+  function fmt(n) { return Math.round(n).toLocaleString("fr-FR").replace(/ | /g, " "); }
+  function money(n) { return fmt(n) + " FCFA"; }
+  function millions(n) { return (n / 1e6).toLocaleString("fr-FR", { maximumFractionDigits: 1 }) + " M FCFA"; }
+
+  function compute(v) {
+    var ca = v.clients * v.ticket * v.jours;
+    var variable = ca * v.matiere / 100;
+    var marge = ca - variable;
+    var res = marge - v.fixes;
+    var margeUnit = v.ticket * (1 - v.matiere / 100);
+    var seuilClients = margeUnit > 0 ? v.fixes / (margeUnit * v.jours) : Infinity;
+    var seuilCA = seuilClients * v.ticket * v.jours;
+    var roi = res > 0 ? v.invest / res : Infinity;
+    return { ca: ca, variable: variable, marge: marge, res: res, seuilClients: seuilClients, seuilCA: seuilCA, roi: roi };
+  }
+
+  function render() {
+    var v = {};
+    ids.forEach(function (id) { v[id] = Number(el[id].value); });
+    var r = compute(v);
+    document.getElementById("o-clients").textContent = v.clients;
+    document.getElementById("o-ticket").textContent = money(v.ticket);
+    document.getElementById("o-jours").textContent = v.jours + " j";
+    document.getElementById("o-matiere").textContent = v.matiere + " %";
+    document.getElementById("o-fixes").textContent = money(v.fixes);
+    document.getElementById("o-invest").textContent = millions(v.invest);
+
+    document.getElementById("k-ca").textContent = millions(r.ca);
+    document.getElementById("k-ca-an").textContent = "soit " + millions(r.ca * 12) + " par an";
+    document.getElementById("k-res").textContent = (r.res < 0 ? "− " : "") + millions(Math.abs(r.res));
+    document.getElementById("kpi-res").className = "kpi " + (r.res >= 0 ? "good" : "bad");
+    document.getElementById("k-seuil").textContent = isFinite(r.seuilClients) ? Math.ceil(r.seuilClients) + " clients / jour" : "inatteignable";
+    document.getElementById("k-seuil-ca").textContent = isFinite(r.seuilCA) ? "soit " + millions(r.seuilCA) + " de CA par mois" : "";
+    var roiTxt = isFinite(r.roi) ? (r.roi < 1 ? "moins d'1 mois" : Math.ceil(r.roi) + " mois") : "pas rentable";
+    document.getElementById("k-roi").textContent = roiTxt;
+    document.getElementById("kpi-roi").className = "kpi " + (isFinite(r.roi) ? "" : "bad");
+
+    document.getElementById("t-ca").textContent = fmt(r.ca);
+    document.getElementById("t-var").textContent = "− " + fmt(r.variable);
+    document.getElementById("t-marge").textContent = fmt(r.marge);
+    document.getElementById("t-fixes").textContent = "− " + fmt(v.fixes);
+    document.getElementById("t-res").textContent = (r.res < 0 ? "− " : "") + fmt(Math.abs(r.res));
+
+    var max = 400;
+    document.getElementById("bar-fill").style.width = Math.min(100, v.clients / max * 100) + "%";
+    var mark = document.getElementById("bar-mark");
+    if (isFinite(r.seuilClients) && r.seuilClients <= max) { mark.hidden = false; mark.style.left = (r.seuilClients / max * 100) + "%"; } else { mark.hidden = true; }
+    document.getElementById("bar").setAttribute("aria-label", v.clients + " clients par jour, seuil à " + (isFinite(r.seuilClients) ? Math.ceil(r.seuilClients) : "—"));
+  }
+
+  function setPressed(name) {
+    document.querySelectorAll("[data-preset]").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.preset === name ? "true" : "false"); });
+  }
+  document.querySelectorAll("[data-preset]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var p = presets[b.dataset.preset];
+      Object.keys(p).forEach(function (k) { el[k].value = p[k]; });
+      setPressed(b.dataset.preset); render();
+    });
+  });
+  ids.forEach(function (id) { el[id].addEventListener("input", function () { if (id !== "invest") setPressed(null); render(); }); });
+  render();
+})();
+</script>
+</body>
+</html>
