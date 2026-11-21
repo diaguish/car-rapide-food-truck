@@ -37,7 +37,7 @@
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); }
 .stripe { height: 12px; background: repeating-linear-gradient(90deg, var(--yellow) 0 36px, var(--blue) 36px 72px, var(--red) 72px 84px, var(--blue) 84px 120px); }
-.wrap { max-width: 1240px; margin: 0 auto; padding-block: 32px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 48px; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 32px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 32px; }
 header { display: grid; gap: 10px; }
 .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 h1 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 5.5vw, 54px); line-height: 1.05; margin: 0; text-wrap: balance; }
@@ -71,36 +71,50 @@ h2 { font-family: var(--display); font-weight: 400; font-size: clamp(22px, 3vw, 
   .canvas { grid-template-columns: 1fr; grid-template-areas: "vp" "cs" "cr" "ch" "rv" "kr" "ka" "kp" "co"; }
 }
 
-/* Simulateur */
-.sim { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 20px; align-items: start; }
-@media (max-width: 860px) { .sim { grid-template-columns: 1fr; } }
-.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; display: grid; gap: 18px; min-width: 0; }
-.field { display: grid; gap: 6px; }
-.field label { display: flex; justify-content: space-between; gap: 12px; font-weight: 500; }
-.field output { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--blue); white-space: nowrap; }
-.field small { color: var(--muted); }
-input[type=range] { width: 100%; accent-color: var(--blue); }
-input[type=range]:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
-.presets { display: flex; flex-wrap: wrap; gap: 8px; }
-.presets button { font: 600 13px var(--body); padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; }
-.presets button[aria-pressed="true"] { background: var(--blue); color: #fff; border-color: var(--blue); }
-.presets button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
-.kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.kpi { background: var(--bg); border-radius: 10px; padding: 14px; display: grid; gap: 2px; min-width: 0; }
+/* Feuilles type document */
+.sheet { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 10px 30px rgba(20, 26, 41, .07); padding: clamp(20px, 4vw, 44px); display: grid; gap: 4px; min-width: 0; }
+.sheet .block, .sheet .step, .sheet .risk { background: var(--bg); }
+.sheet .vp { background: var(--yellow); }
+.sheet-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
+.pg { font-variant-numeric: tabular-nums; font-size: 12px; font-weight: 700; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; }
+
+/* Rentabilité (scénario prudent, chiffres figés) */
+.hyp { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 22px; }
+.hyp span { background: var(--chip); color: var(--ink); border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.hyp span b { color: var(--blue); }
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 860px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.kpi { background: var(--bg); border-radius: 12px; padding: 16px; display: grid; gap: 2px; align-content: start; min-width: 0; }
 .kpi span { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
-.kpi strong { font-size: clamp(20px, 2.6vw, 26px); font-variant-numeric: tabular-nums; line-height: 1.2; }
+.kpi strong { font-family: var(--display); font-weight: 400; font-size: clamp(24px, 3.4vw, 34px); line-height: 1.1; font-variant-numeric: tabular-nums; }
 .kpi em { font-style: normal; font-size: 13px; color: var(--muted); }
-.kpi.good strong { color: var(--green); } .kpi.bad strong { color: var(--red); }
+.kpi.good { background: var(--green); } .kpi.good span, .kpi.good em, .kpi.good strong { color: #fff; }
+.kpi.hl { background: var(--yellow); } .kpi.hl span, .kpi.hl em, .kpi.hl strong { color: #141a29; }
+.duo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; margin-top: 28px; }
+@media (max-width: 800px) { .duo { grid-template-columns: 1fr; } }
+.duo h3, .compare h3 { margin: 0 0 10px; font-size: 16px; }
 table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 14px; }
-td, th { padding: 8px 4px; border-bottom: 1px solid var(--line); text-align: left; }
-td:last-child, th:last-child { text-align: right; }
-tr.total td { font-weight: 700; border-bottom: 0; }
+td, th { padding: 9px 6px; border-bottom: 1px solid var(--line); text-align: left; }
+td:not(:first-child), th:not(:first-child) { text-align: right; }
+tr.total td { font-weight: 700; border-bottom: 0; color: var(--green); }
 .table-scroll { overflow-x: auto; }
-.bar { height: 10px; border-radius: 999px; background: var(--bg); overflow: hidden; position: relative; }
-.bar div { height: 100%; background: var(--blue); border-radius: 999px; transition: width .25s; }
-.bar .mark { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--red); }
-.legend { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); }
-@media (prefers-reduced-motion: reduce) { .bar div { transition: none; } }
+.viz { display: grid; gap: 22px; }
+.gauge { position: relative; height: 18px; border-radius: 999px; background: var(--bg); margin-top: 28px; }
+.gauge .fill { position: absolute; inset: 0 auto 0 0; border-radius: 999px; background: var(--blue); }
+.gauge .tick { position: absolute; top: -6px; bottom: -6px; width: 3px; background: var(--red); border-radius: 2px; }
+.gauge .lab { position: absolute; bottom: calc(100% + 8px); transform: translateX(-50%); font-size: 12px; font-weight: 600; white-space: nowrap; }
+.gauge .lab.seuil { color: var(--red); }
+.gauge .lab.nous { color: var(--blue); }
+.scale { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-top: 6px; font-variant-numeric: tabular-nums; }
+.split { display: flex; height: 44px; border-radius: 10px; overflow: hidden; font-size: 13px; font-weight: 700; }
+.split div { display: grid; place-items: center; color: #fff; min-width: 0; }
+.split .m { background: var(--red); } .split .f { background: var(--blue); } .split .r { background: var(--green); }
+.split-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); margin-top: 8px; }
+.split-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.compare { margin-top: 30px; }
+.compare th.on, .compare td.on { background: var(--chip); font-weight: 700; }
+.compare thead th { font-size: 13px; color: var(--muted); font-weight: 600; }
+.compare thead th.on { color: var(--blue); }
 
 /* Feuille de route + risques */
 .road { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
@@ -131,7 +145,8 @@ footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line)
     <p class="lead">La street food sénégalaise servie depuis l'icône de Dakar : un car rapide jaune et bleu transformé en cuisine mobile, propre et rapide, qui va là où sont les clients.</p>
   </header>
 
-  <section aria-labelledby="t-canvas">
+  <section class="sheet" aria-labelledby="t-canvas">
+    <div class="sheet-head"><span class="eyebrow">Business model</span><span class="pg">1 / 3</span></div>
     <h2 id="t-canvas">Le canevas en 9 blocs</h2>
     <p class="section-lead">À lire en partant du centre : la proposition de valeur, puis les clients à droite, l'organisation à gauche et l'argent en bas.</p>
     <div class="canvas">
@@ -237,75 +252,87 @@ footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line)
     </div>
   </section>
 
-  <section aria-labelledby="t-sim">
-    <h2 id="t-sim">Est-ce que ça tient ? Le simulateur</h2>
-    <p class="section-lead">Les valeurs de départ sont des hypothèses à ajuster avec l'équipe. Bougez les curseurs : tous les chiffres se recalculent.</p>
-    <div class="sim">
-      <div class="panel">
-        <div class="presets" role="group" aria-label="Scénarios">
-          <button type="button" data-preset="prudent">Prudent</button>
-          <button type="button" data-preset="cible" aria-pressed="true">Cible</button>
-          <button type="button" data-preset="ambitieux">Ambitieux</button>
-        </div>
-        <div class="field">
-          <label for="clients">Clients par jour <output id="o-clients"></output></label>
-          <input id="clients" type="range" min="20" max="400" step="5" value="120">
-        </div>
-        <div class="field">
-          <label for="ticket">Ticket moyen <output id="o-ticket"></output></label>
-          <input id="ticket" type="range" min="500" max="6000" step="100" value="2000">
-          <small>Par exemple une formule plat + bissap.</small>
-        </div>
-        <div class="field">
-          <label for="jours">Jours d'ouverture par mois <output id="o-jours"></output></label>
-          <input id="jours" type="range" min="10" max="30" step="1" value="26">
-        </div>
-        <div class="field">
-          <label for="matiere">Matières et emballages <output id="o-matiere"></output></label>
-          <input id="matiere" type="range" min="20" max="60" step="1" value="40">
-          <small>En pourcentage du chiffre d'affaires.</small>
-        </div>
-        <div class="field">
-          <label for="fixes">Charges fixes par mois <output id="o-fixes"></output></label>
-          <input id="fixes" type="range" min="300000" max="3000000" step="50000" value="1000000">
-          <small>Salaires, gaz, carburant, mairie, assurance, entretien, communication.</small>
-        </div>
-        <div class="field">
-          <label for="invest">Investissement de départ <output id="o-invest"></output></label>
-          <input id="invest" type="range" min="5000000" max="35000000" step="250000" value="12750000">
-          <small>Entre 7,8 M (bas) et 17,5 M (haut) d'après le devis détaillé.</small>
-        </div>
-      </div>
+  <section class="sheet" aria-labelledby="t-sim">
+    <div class="sheet-head"><span class="eyebrow">Rentabilité · scénario prudent</span><span class="pg">2 / 3</span></div>
+    <h2 id="t-sim">Même en prudent, le food truck est rentable</h2>
+    <p class="section-lead">Hypothèses volontairement basses : peu de clients, petit ticket, matières chères. Ce sont des estimations à confirmer sur le terrain.</p>
+    <div class="hyp">
+      <span><b>60</b> clients par jour</span>
+      <span>Ticket moyen <b>1 800 FCFA</b></span>
+      <span><b>24</b> jours par mois</span>
+      <span>Matières et emballages <b>42 %</b></span>
+      <span>Charges fixes <b>1 000 000 FCFA</b> / mois</span>
+    </div>
 
-      <div class="panel" aria-live="polite">
-        <div class="kpis">
-          <div class="kpi"><span>Chiffre d'affaires / mois</span><strong id="k-ca"></strong><em id="k-ca-an"></em></div>
-          <div class="kpi" id="kpi-res"><span>Résultat / mois</span><strong id="k-res"></strong><em>avant impôts et rémunération des associés</em></div>
-          <div class="kpi"><span>Seuil de rentabilité</span><strong id="k-seuil"></strong><em id="k-seuil-ca"></em></div>
-          <div class="kpi" id="kpi-roi"><span>Retour sur investissement</span><strong id="k-roi"></strong><em>temps pour rembourser le départ</em></div>
-        </div>
-        <div>
-          <div class="legend"><span>Clients par jour</span><span><span style="color:var(--red)">|</span> seuil de rentabilité</span></div>
-          <div class="bar" role="img" id="bar" aria-label=""><div id="bar-fill"></div><span class="mark" id="bar-mark"></span></div>
-        </div>
+    <div class="kpis">
+      <div class="kpi"><span>Chiffre d'affaires</span><strong>2,6 M</strong><em>FCFA par mois, soit 31,1 M par an</em></div>
+      <div class="kpi good"><span>Résultat</span><strong>+ 503 000</strong><em>FCFA par mois, avant impôts et rémunération des associés</em></div>
+      <div class="kpi"><span>Seuil de rentabilité</span><strong>40 clients</strong><em>par jour, soit 1,7 M FCFA de CA par mois</em></div>
+      <div class="kpi hl"><span>Remboursement</span><strong>16 à 35 mois</strong><em>selon l'investissement : 7,8 M ou 17,5 M FCFA</em></div>
+    </div>
+
+    <div class="duo">
+      <div>
+        <h3>Compte de résultat mensuel</h3>
         <div class="table-scroll">
           <table>
-            <thead><tr><th>Compte de résultat mensuel</th><th>FCFA</th></tr></thead>
             <tbody>
-              <tr><td>Chiffre d'affaires</td><td id="t-ca"></td></tr>
-              <tr><td>− Matières et emballages</td><td id="t-var"></td></tr>
-              <tr><td>= Marge brute</td><td id="t-marge"></td></tr>
-              <tr><td>− Charges fixes</td><td id="t-fixes"></td></tr>
-              <tr class="total"><td>= Résultat</td><td id="t-res"></td></tr>
+              <tr><td>Chiffre d'affaires (60 × 1 800 × 24)</td><td>2 592 000</td></tr>
+              <tr><td>− Matières et emballages (42 %)</td><td>− 1 088 640</td></tr>
+              <tr><td>= Marge brute</td><td>1 503 360</td></tr>
+              <tr><td>− Charges fixes</td><td>− 1 000 000</td></tr>
+              <tr class="total"><td>= Résultat (FCFA)</td><td>+ 503 360</td></tr>
             </tbody>
           </table>
         </div>
       </div>
+      <div class="viz">
+        <div>
+          <h3>Clients par jour</h3>
+          <div class="gauge" role="img" aria-label="60 clients par jour dans le scénario prudent, seuil de rentabilité à 40 clients">
+            <div class="fill" style="width: 40%"></div>
+            <span class="tick" style="left: 26.7%"></span>
+            <span class="lab seuil" style="left: 26.7%">Seuil 40</span>
+            <span class="lab nous" style="left: 40%; transform: translateX(-10%)">Prudent 60</span>
+          </div>
+          <div class="scale"><span>0</span><span>50</span><span>100</span><span>150</span></div>
+        </div>
+        <div>
+          <h3>Sur 1 000 FCFA encaissés</h3>
+          <div class="split" role="img" aria-label="Sur 1 000 FCFA : 420 pour les matières, 386 pour les charges fixes, 194 de résultat">
+            <div class="m" style="width: 42%">420</div>
+            <div class="f" style="width: 38.6%">386</div>
+            <div class="r" style="width: 19.4%">194</div>
+          </div>
+          <div class="split-legend">
+            <span><i style="background: var(--red)"></i>Matières et emballages</span>
+            <span><i style="background: var(--blue)"></i>Charges fixes</span>
+            <span><i style="background: var(--green)"></i>Résultat</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <p class="note">Charges fixes de départ (1 000 000 FCFA par mois, estimation) : 3 salaires 400 000, gaz 120 000, carburant et groupe électrogène 150 000, autorisation municipale 100 000, assurance 60 000, entretien 60 000, communication 60 000, divers 50 000. À remplacer par vos vrais chiffres.</p>
+
+    <div class="compare">
+      <h3>Et si ça marche mieux ?</h3>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th></th><th class="on">Prudent</th><th>Cible</th><th>Ambitieux</th></tr></thead>
+          <tbody>
+            <tr><td>Clients par jour</td><td class="on">60</td><td>120</td><td>220</td></tr>
+            <tr><td>Ticket moyen (FCFA)</td><td class="on">1 800</td><td>2 000</td><td>2 300</td></tr>
+            <tr><td>CA par mois (FCFA)</td><td class="on">2,6 M</td><td>6,2 M</td><td>13,7 M</td></tr>
+            <tr><td>Résultat par mois (FCFA)</td><td class="on">0,5 M</td><td>2,7 M</td><td>7,2 M</td></tr>
+            <tr><td>Remboursement</td><td class="on">16 à 35 mois</td><td>3 à 7 mois</td><td>2 à 3 mois</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="note">Charges fixes (estimation, 1 000 000 FCFA par mois ; 1 300 000 en ambitieux) : 3 salaires 400 000, gaz 120 000, carburant et groupe électrogène 150 000, autorisation municipale 100 000, assurance 60 000, entretien 60 000, communication 60 000, divers 50 000. Investissement : 7,8 à 17,5 M FCFA d'après le devis détaillé, hors eau, gaz et électricité.</p>
   </section>
 
-  <section aria-labelledby="t-road">
+  <section class="sheet" aria-labelledby="t-road">
+    <div class="sheet-head"><span class="eyebrow">Plan d'action</span><span class="pg">3 / 3</span></div>
     <h2 id="t-road">Feuille de route</h2>
     <p class="section-lead">Commencer petit, mesurer, puis élargir.</p>
     <div class="road">
@@ -318,10 +345,8 @@ footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line)
       <article class="step"><div class="when">Mois 9 à 18</div><h3>Grandir</h3>
         <ul><li>Contrats avec des entreprises (repas du midi)</li><li>Bissap en bouteille</li><li>Étudier un 2ᵉ véhicule ou un point fixe</li></ul></article>
     </div>
-  </section>
 
-  <section aria-labelledby="t-risk">
-    <h2 id="t-risk">Risques et parades</h2>
+    <h2 id="t-risk" style="margin-top:32px">Risques et parades</h2>
     <div class="risks">
       <article class="risk"><h3>Autorisations refusées ou coûteuses</h3><p><b>Parade :</b> rencontrer les mairies avant d'acheter, viser aussi des terrains privés (stations-service, parkings d'entreprises).</p></article>
       <article class="risk"><h3>Panne du véhicule ancien</h3><p><b>Parade :</b> révision complète au départ, budget entretien mensuel, mécanicien attitré.</p></article>
@@ -332,82 +357,9 @@ footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line)
     </div>
   </section>
 
-  <footer>Document de travail. Les chiffres du simulateur sont des hypothèses, l'investissement vient du devis détaillé. Maquette 3D : diaguish.github.io/car-rapide-food-truck</footer>
+  <footer>Document de travail. Les chiffres de rentabilité sont des hypothèses, l'investissement vient du devis détaillé. Maquette 3D : diaguish.github.io/car-rapide-food-truck</footer>
 </div>
 
-<script>
-(function () {
-  var presets = {
-    prudent:   { clients: 60,  ticket: 1800, jours: 24, matiere: 42, fixes: 1000000 },
-    cible:     { clients: 120, ticket: 2000, jours: 26, matiere: 40, fixes: 1000000 },
-    ambitieux: { clients: 220, ticket: 2300, jours: 27, matiere: 38, fixes: 1300000 }
-  };
-  var ids = ["clients", "ticket", "jours", "matiere", "fixes", "invest"];
-  var el = {};
-  ids.forEach(function (id) { el[id] = document.getElementById(id); });
-  function fmt(n) { return Math.round(n).toLocaleString("fr-FR").replace(/ | /g, " "); }
-  function money(n) { return fmt(n) + " FCFA"; }
-  function millions(n) { return (n / 1e6).toLocaleString("fr-FR", { maximumFractionDigits: 1 }) + " M FCFA"; }
 
-  function compute(v) {
-    var ca = v.clients * v.ticket * v.jours;
-    var variable = ca * v.matiere / 100;
-    var marge = ca - variable;
-    var res = marge - v.fixes;
-    var margeUnit = v.ticket * (1 - v.matiere / 100);
-    var seuilClients = margeUnit > 0 ? v.fixes / (margeUnit * v.jours) : Infinity;
-    var seuilCA = seuilClients * v.ticket * v.jours;
-    var roi = res > 0 ? v.invest / res : Infinity;
-    return { ca: ca, variable: variable, marge: marge, res: res, seuilClients: seuilClients, seuilCA: seuilCA, roi: roi };
-  }
-
-  function render() {
-    var v = {};
-    ids.forEach(function (id) { v[id] = Number(el[id].value); });
-    var r = compute(v);
-    document.getElementById("o-clients").textContent = v.clients;
-    document.getElementById("o-ticket").textContent = money(v.ticket);
-    document.getElementById("o-jours").textContent = v.jours + " j";
-    document.getElementById("o-matiere").textContent = v.matiere + " %";
-    document.getElementById("o-fixes").textContent = money(v.fixes);
-    document.getElementById("o-invest").textContent = millions(v.invest);
-
-    document.getElementById("k-ca").textContent = millions(r.ca);
-    document.getElementById("k-ca-an").textContent = "soit " + millions(r.ca * 12) + " par an";
-    document.getElementById("k-res").textContent = (r.res < 0 ? "− " : "") + millions(Math.abs(r.res));
-    document.getElementById("kpi-res").className = "kpi " + (r.res >= 0 ? "good" : "bad");
-    document.getElementById("k-seuil").textContent = isFinite(r.seuilClients) ? Math.ceil(r.seuilClients) + " clients / jour" : "inatteignable";
-    document.getElementById("k-seuil-ca").textContent = isFinite(r.seuilCA) ? "soit " + millions(r.seuilCA) + " de CA par mois" : "";
-    var roiTxt = isFinite(r.roi) ? (r.roi < 1 ? "moins d'1 mois" : Math.ceil(r.roi) + " mois") : "pas rentable";
-    document.getElementById("k-roi").textContent = roiTxt;
-    document.getElementById("kpi-roi").className = "kpi " + (isFinite(r.roi) ? "" : "bad");
-
-    document.getElementById("t-ca").textContent = fmt(r.ca);
-    document.getElementById("t-var").textContent = "− " + fmt(r.variable);
-    document.getElementById("t-marge").textContent = fmt(r.marge);
-    document.getElementById("t-fixes").textContent = "− " + fmt(v.fixes);
-    document.getElementById("t-res").textContent = (r.res < 0 ? "− " : "") + fmt(Math.abs(r.res));
-
-    var max = 400;
-    document.getElementById("bar-fill").style.width = Math.min(100, v.clients / max * 100) + "%";
-    var mark = document.getElementById("bar-mark");
-    if (isFinite(r.seuilClients) && r.seuilClients <= max) { mark.hidden = false; mark.style.left = (r.seuilClients / max * 100) + "%"; } else { mark.hidden = true; }
-    document.getElementById("bar").setAttribute("aria-label", v.clients + " clients par jour, seuil à " + (isFinite(r.seuilClients) ? Math.ceil(r.seuilClients) : "—"));
-  }
-
-  function setPressed(name) {
-    document.querySelectorAll("[data-preset]").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.preset === name ? "true" : "false"); });
-  }
-  document.querySelectorAll("[data-preset]").forEach(function (b) {
-    b.addEventListener("click", function () {
-      var p = presets[b.dataset.preset];
-      Object.keys(p).forEach(function (k) { el[k].value = p[k]; });
-      setPressed(b.dataset.preset); render();
-    });
-  });
-  ids.forEach(function (id) { el[id].addEventListener("input", function () { if (id !== "invest") setPressed(null); render(); }); });
-  render();
-})();
-</script>
 </body>
 </html>
